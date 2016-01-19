@@ -66,12 +66,18 @@ http://codeblog.jonskeet.uk/
 http://www.yoda.arachsys.com/csharp/
  
 
+Lahman’s Baseball Database 
+Copyright 1996-2015 by Sean Lahman
+http://seanlahman.com/baseball-archive/statistics/
+Licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License
+   http://creativecommons.org/licenses/by-sa/3.0/   
+   The license is distributed with this software as LICENSE-CC-BY-SA-3.0.htm
+
+   
 Markdown files created with MarkdownPad
 Copyright © 2013-2015 Evan Wondrasek / Apricity Software LLC
 All Rights Reserved
 http://markdownpad.com/
-
-
 
 
  
