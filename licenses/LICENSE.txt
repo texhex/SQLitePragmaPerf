@@ -18,6 +18,13 @@ Created with Microsoft Visual Studio Community 2015
 http://www.visualstudio.com/
 
 
+D. Richard Hipp System.Data.SQLite
+https://system.data.sqlite.org/
+Public Domain
+   https://www.sqlite.org/copyright.html
+   SQLite® is a registered trademark of Hipp, Wyrick & Company, Inc 
+
+
 xUnit
 Copyright 2014 Outercurve Foundation
 http://xunit.github.io/
@@ -25,6 +32,14 @@ Licensed under the Apache License, Version 2.0
    http://www.apache.org/licenses/LICENSE-2.0 
    The license is distributed with this software as LICENSE-Apache-2.0.txt
 
+   
+NLog
+Copyright (c) 2004-2011 Jaroslaw Kowalski
+http://nlog-project.org/
+Licensed under the terms of BSD license
+   https://github.com/NLog/NLog/blob/master/LICENSE.txt
+   The license is distributed with this software as LICENSE-NLog.txt
+   
    
 Dave Koelle's Alphanum algorithm (AlphanumComparator.cs)
 Copyright © 1997 - 2010 David Koelle
@@ -57,7 +72,15 @@ http://james.newtonking.com/json
 Licensed under the MIT License
    https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md
    The license is distributed with this software as LICENSE-JSON.NET.txt
-   
+
+
+Bytes2you.Validation  
+Copyright Vesko Kolev
+https://github.com/veskokolev/Bytes2you.Validation
+Licensed under the Apache License, Version 2.0
+   http://www.apache.org/licenses/LICENSE-2.0 
+   The license is distributed with this software as LICENSE-Apache-2.0.txt
+
 
 This product includes software developed by Jon Skeet
 http://www.jonskeet.uk/
