@@ -2,15 +2,16 @@ SQLitePragmaPerf
 Copyright © 2016 Michael 'Tex' Hex 
 All Rights Reserved
 https://github.com/texhex/SQLitePragmaPerf
-  
+
 Source code of SQLitePragmaPerf
 Copyright © 2016 Michael 'Tex' Hex 
 https://github.com/texhex/SQLitePragmaPerf
 Licensed under the Apache License, Version 2.0
    http://www.apache.org/licenses/LICENSE-2.0 
    The license is distributed with this software as LICENSE-Apache-2.0.txt
-   
-   
+
+
+
 SQLitePragmaPerf is a derivative/combined work of other software:
 
 Created with Microsoft Visual Studio Community 2015
@@ -18,11 +19,19 @@ Created with Microsoft Visual Studio Community 2015
 http://www.visualstudio.com/
 
 
-D. Richard Hipp System.Data.SQLite
+System.Data.SQLite
 https://system.data.sqlite.org/
-Public Domain
+SQLite is in the Public Domain
    https://www.sqlite.org/copyright.html
-   SQLite® is a registered trademark of Hipp, Wyrick & Company, Inc 
+   The license is distributed with this software as LICENSE-SQLite.htm
+
+
+Lahman’s Baseball Database 
+Copyright 1996-2015 by Sean Lahman
+http://seanlahman.com/baseball-archive/statistics/
+Licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License
+   http://creativecommons.org/licenses/by-sa/3.0/   
+   The license is distributed with this software as LICENSE-CC-BY-SA-3.0.htm
 
 
 xUnit
@@ -32,15 +41,15 @@ Licensed under the Apache License, Version 2.0
    http://www.apache.org/licenses/LICENSE-2.0 
    The license is distributed with this software as LICENSE-Apache-2.0.txt
 
-   
+
 NLog
 Copyright (c) 2004-2011 Jaroslaw Kowalski
 http://nlog-project.org/
 Licensed under the terms of BSD license
    https://github.com/NLog/NLog/blob/master/LICENSE.txt
    The license is distributed with this software as LICENSE-NLog.txt
-   
-   
+
+
 Dave Koelle's Alphanum algorithm (AlphanumComparator.cs)
 Copyright © 1997 - 2010 David Koelle
 http://www.davekoelle.com/alphanum.html
@@ -55,8 +64,8 @@ http://www.codeproject.com/Articles/39120/Lightweight-C-Command-Line-Parser
 Licensed under the Code Project Open License (CPOL) 
   http://www.codeproject.com/info/cpol10.aspx 
   The license is distributed with this software as LICENSE-CPOL.htm
- 
-   
+
+
 InnoSetup
 Copyright (C) 1997-2014 Jordan Russell. All rights reserved.
 Portions Copyright (C) 2000-2014 Martijn Laan. All rights reserved.
@@ -65,7 +74,7 @@ Licensed under the Inno Setup License
    http://www.jrsoftware.org/files/is/license.txt
    The license is distributed with this software as LICENSE-InnoSetup.txt
 
-   
+
 JSON.NET
 Copyright (c) 2007 James Newton-King
 http://james.newtonking.com/json
@@ -87,26 +96,20 @@ http://www.jonskeet.uk/
 Copyright (c) 2004-2006 Jon Skeet. All rights reserved.
 http://codeblog.jonskeet.uk/
 http://www.yoda.arachsys.com/csharp/
- 
 
-Lahman’s Baseball Database 
-Copyright 1996-2015 by Sean Lahman
-http://seanlahman.com/baseball-archive/statistics/
-Licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License
-   http://creativecommons.org/licenses/by-sa/3.0/   
-   The license is distributed with this software as LICENSE-CC-BY-SA-3.0.htm
 
-   
 Markdown files created with MarkdownPad
 Copyright © 2013-2015 Evan Wondrasek / Apricity Software LLC
 All Rights Reserved
 http://markdownpad.com/
 
 
- 
+
 Microsoft, PowerShell, Windows, and the Windows logo are trademarks, or 
 registered trademarks of Microsoft Corporation in the United States 
 and/or other countries.
+
+SQLite is a registered trademark of Hipp, Wyrick & Company, Inc 
 
 All other product and company names mentioned herein are the trademarks or 
 registered trademarks of their respective owners.
