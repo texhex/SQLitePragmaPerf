@@ -54,7 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBOptionBase.cs" />
+    <Compile Include="DBOptionBaseConnectionStringParameterInteger.cs" />
+    <Compile Include="DBOptionCacheSize.cs" />
+    <Compile Include="DBOptionBaseConnectionStringParameter.cs" />
     <Compile Include="DBOptionEncoding.cs" />
+    <Compile Include="IConnectionStringParameter.cs" />
     <Compile Include="NLogSubClassLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
