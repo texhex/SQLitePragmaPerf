@@ -13,18 +13,39 @@ namespace SQLitePragmaPerf
         UTF16LE
     }
 
-    //https://www.sqlite.org/pragma.html#pragma_encoding
-    public class DBOptionEncoding
+    /// <summary>
+    /// This defines the encoding for a database (PRAGMA main.encoding;). 
+    /// It must be set when a new database is created for the first time and cannot be changed afterwards.
+    /// </summary>
+    public class DBOptionEncoding : DBOptionBaseConnectionStringParameter<Encoding>
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private const string OPTION_NAME = "Encoding";
+        private const string CONNECTION_STRING_PARAMETER = "UseUTF16Encoding";
 
         Encoding _encoding;
 
-        public DBOptionEncoding(Encoding encoding)
+        /// <summary>
+        /// Creates the option without a target value. It can only be used for retrieving the curnrent value.
+        /// </summary>
+        public DBOptionEncoding() : base(OPTION_NAME, CONNECTION_STRING_PARAMETER, true)
         {
-            logger.Debug("Encoding set to {0}", encoding);
+            Log.Debug("Created without target value");
+        }
+
+        /// <summary>
+        /// Creates the option with a target value. This option can then be applied to existing databases
+        /// </summary>
+        /// <param name="encoding">The desired encoding</param>
+        public DBOptionEncoding(Encoding encoding) : base(OPTION_NAME, CONNECTION_STRING_PARAMETER, true)
+        {
+            Log.Debug("Encoding set to {0}", encoding);
             _encoding = encoding;
         }
+
+
+
+
+
 
         public string ConnectionStringParameter
         {

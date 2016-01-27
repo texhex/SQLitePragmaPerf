@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace SQLitePragmaPerf
 {
-    public class DBOptionCacheSize
+    public class DBOptionCacheSize:DBOptionBaseConnectionStringParameter<int>
     {
+        public DBOptionCacheSize():base("","",false)
+        {
+
+        }
     }
 }

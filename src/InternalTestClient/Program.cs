@@ -15,7 +15,7 @@ namespace InternalTestClient
     {
         static void ConfigureNLog()
         {
-            string outputLayout = "[${date:format=HH\\:MM\\:ss}] ${logger}::${message}";
+            string outputLayout = "[${date:format=HH\\:MM\\:ss}] ${logger} >> ${message}";
 
             LoggingConfiguration config = new LoggingConfiguration();
 
@@ -40,23 +40,24 @@ namespace InternalTestClient
 
         static void Main(string[] args)
         {
-
             //Set up NLog
             ConfigureNLog();
 
 
-            Logger logger = LogManager.GetCurrentClassLogger();
-            logger.Info("Starting...");
+            Logger log = LogManager.GetCurrentClassLogger();
+            log.Info("Starting...");
 
 
-            DBOptionEncoding encPragma = new DBOptionEncoding(SQLitePragmaPerf.Encoding.UTF16LE);
-
+            //DBOptionEncoding encPragma = new DBOptionEncoding(SQLitePragmaPerf.Encoding.UTF16LE);
+            DBOptionEncoding encPragma = new DBOptionEncoding();
             string sResult = encPragma.ConnectionStringParameter;
+            log.Info("Parameter: {0}", sResult);
+
+            //This should crash
+            //DBOptionCacheSize optCache = new DBOptionCacheSize();
 
 
-
-
-
+            
 
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
