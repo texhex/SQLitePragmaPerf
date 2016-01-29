@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-//using NLog.R
 using SQLitePragmaPerf;
+using System.Data.SQLite;
 
 namespace InternalTestClient
 {
@@ -47,17 +47,35 @@ namespace InternalTestClient
             Logger log = LogManager.GetCurrentClassLogger();
             log.Info("Starting...");
 
+            string fileName = @"C:\TEMP\SQLitePragmaPerf_" + Guid.NewGuid().ToString() + ".sqlite";
+            log.Info("Testing database {0}", fileName);
 
-            //DBOptionEncoding encPragma = new DBOptionEncoding(SQLitePragmaPerf.Encoding.UTF16LE);
-            DBOptionEncoding encPragma = new DBOptionEncoding();
-            string sResult = encPragma.ConnectionStringParameter;
-            log.Info("Parameter: {0}", sResult);
-
-            //This should crash
-            //DBOptionCacheSize optCache = new DBOptionCacheSize();
-
+            SQLiteConnection.CreateFile(fileName);
+            SQLiteConnection con = new SQLiteConnection(string.Format("Data Source={0};", fileName));
+            con.Open();
 
             
+            //DBOptionEncoding encPragma = new DBOptionEncoding(SQLitePragmaPerf.Encoding.UTF16LE);
+            DBOptionEncoding encPragma = new DBOptionEncoding();
+            //encPragma.TargetValue = SQLitePragmaPerf.Encoding.UTF16LE;
+            //encPragma.TargetValue = SQLitePragmaPerf.Encoding.UTF8;
+
+            log.Info("Parameter: {0}", encPragma.ConnectionStringParameter);
+            log.Info("Status: {0}", encPragma.ExportActiveValue(con));
+
+
+            DBOptionCacheSize optCache = new DBOptionCacheSize();
+            optCache.TargetValue = -1024;
+            log.Info("Parameter: {0}", optCache.ConnectionStringParameter);
+            log.Info("Status: {0}", optCache.ExportActiveValue(con));
+
+
+
+            //Close and reopen databse
+            //If option IsPersistent=TRUE -> Value should be same as before (verfiy run)
+            //If option IsPersistent=FALSE -> Reapply
+
+
 
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();

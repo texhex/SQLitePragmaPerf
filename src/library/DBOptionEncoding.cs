@@ -14,61 +14,67 @@ namespace SQLitePragmaPerf
     }
 
     /// <summary>
-    /// This defines the encoding for a database (PRAGMA main.encoding;). 
+    /// This defines the encoding for a database (PRAGMA main.encoding). 
     /// It must be set when a new database is created for the first time and cannot be changed afterwards.
     /// </summary>
     public class DBOptionEncoding : DBOptionBaseConnectionStringParameter<Encoding>
     {
-        private const string OPTION_NAME = "Encoding";
-        private const string CONNECTION_STRING_PARAMETER = "UseUTF16Encoding";
-
-        Encoding _encoding;
 
         /// <summary>
         /// Creates the option without a target value. It can only be used for retrieving the curnrent value.
         /// </summary>
-        public DBOptionEncoding() : base(OPTION_NAME, CONNECTION_STRING_PARAMETER, true)
+        public DBOptionEncoding() : base(optionName: "Encoding",
+                                         connectionStringParameterTemplate: "UseUTF16Encoding={0};",
+                                         retrieveActiveValueSQL: "PRAGMA main.encoding;",
+                                         isPersistent: true)
         {
-            Log.Debug("Created without target value");
-        }
-
-        /// <summary>
-        /// Creates the option with a target value. This option can then be applied to existing databases
-        /// </summary>
-        /// <param name="encoding">The desired encoding</param>
-        public DBOptionEncoding(Encoding encoding) : base(OPTION_NAME, CONNECTION_STRING_PARAMETER, true)
-        {
-            Log.Debug("Encoding set to {0}", encoding);
-            _encoding = encoding;
+            Log.Debug("Created");
         }
 
 
-
-
-
-
-        public string ConnectionStringParameter
+        protected override string ConvertToConnectionStringParameterValue(Encoding value)
         {
-            get
+            if (value == Encoding.UTF16LE)
             {
-                string template = "UseUTF16Encoding={0};";
-
-                if (_encoding == Encoding.UTF16LE)
-                {
-                    return string.Format(template, "True");
-                }
-                else
-                {
-                    return string.Format(template, "False");
-                }
+                return "True";
+            }
+            else
+            {
+                return "False";
             }
         }
 
-        public override string ToString()
+        protected override string ConvertToDisplayString(Encoding value)
         {
-            return ConnectionStringParameter;
+            if (value == Encoding.UTF16LE)
+            {
+                return "UTF-16le (Little-endian 16-bit Unicode)";
+            }
+            else
+            {
+                return "UTF-8 (8-bit Unicode)";
+            }
         }
 
+
+        protected override Encoding ConvertFromSQLite(string retrievedValue)
+        {
+            if (retrievedValue.ToUpper() == "UTF-16LE")
+            {
+                return Encoding.UTF16LE;
+            }
+            else
+            {
+                if (retrievedValue.ToUpper() == "UTF-8")
+                {
+                    return Encoding.UTF8;
+                }
+                else
+                {
+                    throw new NotSupportedException(string.Format("Unsupported encoding {0}", retrievedValue));
+                }
+            }
+        }
 
     }
 }

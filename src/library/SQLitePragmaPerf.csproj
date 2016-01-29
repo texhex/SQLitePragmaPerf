@@ -59,7 +59,6 @@
     <Compile Include="DBOptionBaseConnectionStringParameter.cs" />
     <Compile Include="DBOptionEncoding.cs" />
     <Compile Include="DBOptionSQLiteVersion.cs" />
-    <Compile Include="NLogSubClassLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
