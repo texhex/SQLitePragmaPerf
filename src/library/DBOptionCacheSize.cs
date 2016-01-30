@@ -7,27 +7,24 @@ using Bytes2you.Validation;
 
 namespace SQLitePragmaPerf
 {
+    /// <summary>
+    /// Cache Size (PRAGMA main.cache_size) - http://www.sqlite.org/pragma.html#pragma_cache_size
+    /// This value can bei be positive, which case is means "X pages cache" or negative in which case it means "X kB of cache"
+    /// </summary>
     public class DBOptionCacheSize : DBOptionBaseConnectionStringParameter<int>
     {
         public DBOptionCacheSize() : base(optionName: "Cache Size",
                                           connectionStringParameterTemplate: "Cache Size={0};",
                                           retrieveActiveValueSQL: "PRAGMA main.cache_size;",
-                                          isPersistent: false)
+                                          isPersistent: false) 
         {
+            Log.Debug("Created");
 
         }
 
         protected override string ConvertToConnectionStringParameterValue(int value)
         {
-            if (value < 0)
-            {
-                return value.ToString();
-            }
-            else
-            {
-                return (value * -1).ToString();
-            }
-
+            return value.ToString();
         }
 
         protected override int ConvertFromSQLite(string retrievedValue)
@@ -43,7 +40,7 @@ namespace SQLitePragmaPerf
         {
             if (value < 0)
             {
-                return string.Format("{0} KB", value);
+                return string.Format("{0} kB", (value*-1));
             }
             else
             {

@@ -20,9 +20,6 @@ namespace SQLitePragmaPerf
     public class DBOptionEncoding : DBOptionBaseConnectionStringParameter<Encoding>
     {
 
-        /// <summary>
-        /// Creates the option without a target value. It can only be used for retrieving the curnrent value.
-        /// </summary>
         public DBOptionEncoding() : base(optionName: "Encoding",
                                          connectionStringParameterTemplate: "UseUTF16Encoding={0};",
                                          retrieveActiveValueSQL: "PRAGMA main.encoding;",

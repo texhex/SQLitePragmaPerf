@@ -9,12 +9,19 @@ using Bytes2you.Validation;
 namespace SQLitePragmaPerf
 {
     /// <summary>
-    /// This class is used as base for settings that are definied as ConnectionString parameters only
+    /// Interface to note that DBOption is a ConnectionStringParameter type
     /// </summary>
-    public abstract class DBOptionBaseConnectionStringParameter<T> : DBOptionBase<T>
+    public interface IDBOptionConnectionStringParameter
     {
-        protected string _connectionStringParameterTemplate = "";
+        string ApplyToConnectionString(string connectionString);
+    }
 
+
+    /// <summary>
+    /// This class is used as base for options that are definid as ConnectionString parameters only
+    /// </summary>
+    public abstract class DBOptionBaseConnectionStringParameter<T> : DBOptionBaseImplementation<T>, IDBOptionConnectionStringParameter
+    {
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
@@ -22,49 +29,43 @@ namespace SQLitePragmaPerf
         /// <param name="connectionStringParameterTemplate">A template (Param={0}) to create the connection string parameter for this option</param>
         /// <param name="retrieveActiveValueSQL">SQL command to retrieve the current value for this option from a database</param>
         /// <param name="isPersistent">Option is persistent</param>
-        public DBOptionBaseConnectionStringParameter(string optionName, string connectionStringParameterTemplate, string retrieveActiveValueSQL, bool isPersistent) : base(optionName: optionName, isPersistent: isPersistent, retrieveActiveValueSQL: retrieveActiveValueSQL)
+        public DBOptionBaseConnectionStringParameter(string optionName, string connectionStringParameterTemplate, string retrieveActiveValueSQL, bool isPersistent) : base(optionName: optionName, isPersistent: isPersistent, retrieveValueSQL: retrieveActiveValueSQL)
         {
             Guard.WhenArgument(connectionStringParameterTemplate, "connectionStringParameterTemplate").IsNullOrWhiteSpace().Throw();
 
+            _connectionStringParameterTemplate = connectionStringParameterTemplate;
 
             //Make sure it ends with ";"
-            if (connectionStringParameterTemplate.EndsWith(";"))
+            if (!_connectionStringParameterTemplate.EndsWith(";"))
             {
-                _connectionStringParameterTemplate = connectionStringParameterTemplate;
-            }
-            else
-            {
-                _connectionStringParameterTemplate = connectionStringParameterTemplate + ";";
+                _connectionStringParameterTemplate += ";";
             }
         }
 
 
+        protected string _connectionStringParameterTemplate = "";
+
         /// <summary>
-        /// This will converted the native value to a connection string parameter value (the part behind "=")
+        /// Converts the native value to a connection string parameter value (the part right of the "=")
         /// </summary>
         /// <returns>The value of the connection string parameter for this option</returns>
         protected abstract string ConvertToConnectionStringParameterValue(T value);
 
 
         /// <summary>
-        /// Returns a single connection string parameter that can be appened to an ConnectionString to set this option. 
+        /// This applies TargetValue to a given connectionString. Right now it is simply appened
         /// </summary>
-        public string ConnectionStringParameter
+        /// <param name="connectionString">The connection string that should be changed</param>
+        /// <returns>The new connection string</returns>
+        public string ApplyToConnectionString(string connectionString)
         {
-            get
-            {
-                if (TargetValueSet)
-                {
-                    //Translated -> Template: MyParameter={0}, replace {0} with the value from ConvertToConnectionStringParameterValue()
-                    string parameterValue = ConvertToConnectionStringParameterValue(TargetValue);
-                    return string.Format(_connectionStringParameterTemplate, parameterValue);
-                }
-                else
-                {
-                    //Value not set, return empty string
-                    return "";
-                }
-            }
+            ThrowExceptionIfTargetValueIsNotSet();
+
+            //Translated -> Template: MyParameter={0}, replace {0} with the value from ConvertToConnectionStringParameterValue()
+            string parameterValue = ConvertToConnectionStringParameterValue(TargetValue);
+            string fullParameter = string.Format(_connectionStringParameterTemplate, parameterValue);
+
+            return connectionString + fullParameter;
         }
 
 

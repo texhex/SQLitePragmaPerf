@@ -15,7 +15,9 @@ namespace InternalTestClient
     {
         static void ConfigureNLog()
         {
-            string outputLayout = "[${date:format=HH\\:MM\\:ss}] ${logger} >> ${message}";
+            //string outputLayout = "[${date:format=HH\\:MM\\:ss}] ${logger} >> ${message}"; //Example: [14:01:25] SQLitePragmaPerf.DBOptionEncoding >> Created
+
+            string outputLayout = "[${time}-${level}] ${logger} >> ${message}";
 
             LoggingConfiguration config = new LoggingConfiguration();
 
@@ -47,38 +49,31 @@ namespace InternalTestClient
             Logger log = LogManager.GetCurrentClassLogger();
             log.Info("Starting...");
 
-            string fileName = @"C:\TEMP\SQLitePragmaPerf_" + Guid.NewGuid().ToString() + ".sqlite";
-            log.Info("Testing database {0}", fileName);
+            DatabaseHandler dbHandler = new DatabaseHandler(@"C:\TEMP");
 
-            SQLiteConnection.CreateFile(fileName);
-            SQLiteConnection con = new SQLiteConnection(string.Format("Data Source={0};", fileName));
-            con.Open();
+            //dbHandler.CreateDatabase(DBOptionSets.AllOptionsWithoutTargetValue());
+            dbHandler.CreateDatabase(DBOptionSets.Testing1());
 
-            
-            //DBOptionEncoding encPragma = new DBOptionEncoding(SQLitePragmaPerf.Encoding.UTF16LE);
-            DBOptionEncoding encPragma = new DBOptionEncoding();
-            //encPragma.TargetValue = SQLitePragmaPerf.Encoding.UTF16LE;
-            //encPragma.TargetValue = SQLitePragmaPerf.Encoding.UTF8;
-
-            log.Info("Parameter: {0}", encPragma.ConnectionStringParameter);
-            log.Info("Status: {0}", encPragma.ExportActiveValue(con));
-
-
-            DBOptionCacheSize optCache = new DBOptionCacheSize();
-            optCache.TargetValue = -1024;
-            log.Info("Parameter: {0}", optCache.ConnectionStringParameter);
-            log.Info("Status: {0}", optCache.ExportActiveValue(con));
-
-
-
-            //Close and reopen databse
-            //If option IsPersistent=TRUE -> Value should be same as before (verfiy run)
-            //If option IsPersistent=FALSE -> Reapply
 
 
 
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
+        }
+
+        //Code from: http://stackoverflow.com/a/457708/612954 by JaredPar - http://stackoverflow.com/users/23283/jaredpar
+        static bool IsSubclassOfRawGeneric(Type genericBase, Type toCheck)
+        {
+            while (toCheck != null && toCheck != typeof(object))
+            {
+                var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
+                if (genericBase == cur)
+                {
+                    return true;
+                }
+                toCheck = toCheck.BaseType;
+            }
+            return false;
         }
     }
 }

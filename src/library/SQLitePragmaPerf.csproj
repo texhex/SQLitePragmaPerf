@@ -54,11 +54,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBOptionBase.cs" />
+    <Compile Include="DatabaseHandler.cs" />
+    <Compile Include="DBOptionBaseImplementation.cs" />
+    <Compile Include="DBOptionBasePragma.cs" />
     <Compile Include="DBOptionCacheSize.cs" />
     <Compile Include="DBOptionBaseConnectionStringParameter.cs" />
     <Compile Include="DBOptionEncoding.cs" />
+    <Compile Include="DBOptionPageSize.cs" />
+    <Compile Include="DBOptionSets.cs" />
+    <Compile Include="DBOptionSecureDelete.cs" />
     <Compile Include="DBOptionSQLiteVersion.cs" />
+    <Compile Include="DBOptionBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
