@@ -65,6 +65,7 @@
     <Compile Include="DBOptionSecureDelete.cs" />
     <Compile Include="DBOptionSQLiteVersion.cs" />
     <Compile Include="DBOptionBase.cs" />
+    <Compile Include="DBOptionTempStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

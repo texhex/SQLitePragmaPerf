@@ -41,6 +41,16 @@ namespace SQLitePragmaPerf
         //This contains the value this option is set to
         protected T _targetValue;
 
+        /// <summary>
+        /// This function is caleld before the TargetValue is set and can be used by a sub class to change the value
+        /// </summary>
+        /// <param name="value">The value to be checked</param>
+        /// <returns>Value that will then be used as TargetValue</returns>
+        protected virtual T VerifyTargetValue(T value)
+        {
+            return value;
+        }
+
 
         /// <summary>
         /// The value this option should have
@@ -53,7 +63,7 @@ namespace SQLitePragmaPerf
             }
             set
             {
-                _targetValue = value;
+                _targetValue = VerifyTargetValue(value);
                 TargetValueSet = true;
             }
         }
@@ -68,6 +78,7 @@ namespace SQLitePragmaPerf
             get
             {
                 ThrowExceptionIfTargetValueIsNotSet();
+
                 return ConvertToDisplayString(TargetValue);
             }
 
@@ -118,7 +129,7 @@ namespace SQLitePragmaPerf
 
                 if (result == null)
                 {
-                    throw new InvalidCastException(string.Format("Can't verify DBOption, executing [{0}] returned NULL", _retrieveActiveValueSQL));
+                    throw new InvalidCastException(string.Format("Can't verify DBOption {1}, executing [{0}] returned NULL", _retrieveActiveValueSQL, OptionName));
                 }
 
                 string optionValueString = result.ToString();

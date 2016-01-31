@@ -2,10 +2,15 @@
 **IN EARLY DEVELOPMENT. PLEASE IGNORE FOR NOW**
 
 
-This project tests the effect of System.Data.SQLite database connection settings (most of them map to a [PRAGMA][pragmas] statement) on different SQL statements. When all tests are run, it generates CSV files which can be further analyzed.
+This project tests the effect of System.Data.SQLite database connection settings or [PRAGMA][pragmas] statement on different SQL statements. When all tests are run, it generates CSV files which can be further analyzed.
 
-It’s intent to easily proof or disproof if pragma X set to Y would result in a 1320% performance gain. However, as this project depends on the [StopWatch][_stopwatch] class, it cannot provide 100% [accurate timings][no_acc_timing] and is **not** a benchmark tool.
+It’s intent to proof or disproof if pragma X set to Y would result in a 1420% performance gain. 
 
+##<a name="limitations">Limitations</a>
+
+This project depends on the [StopWatch][_stopwatch] class, it cannot provide 100% [accurate timings][no_acc_timing] and is **not** a benchmark tool.
+
+It does also not support all SQLite PRAGMA statements, for example [checkpoint_fullfsync](http://www.sqlite.org/pragma.html#pragma_checkpoint_fullfsync) or [fullfsync](http://www.sqlite.org/pragma.html#pragma_fullfsync) as those are only supported on Mac OS. 
 
 ##<a name="download">Download</a>
 
@@ -14,6 +19,12 @@ The most recent version can be downloaded from [Releases][_downloads].
 ##<a name="docs">Documentation</a>
 
 Please see the [Wiki][_wiki] for documentation. 
+
+##<a name="docs">Additional resources</a>
+
+* [DB Browser for SQLite](http://sqlitebrowser.org/) 
+* [Test Data: Lahman’s Baseball Database](http://seanlahman.com/baseball-archive/statistics/)
+* [SQLite, RowID, INDEX and AUTOINCREMENT](http://texhex.blogspot.com/2016/01/sqlite-rowid-index-and-autoincrement.html)
 
 ##<a name="contribute">Contributions</a>
 

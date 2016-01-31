@@ -18,6 +18,8 @@ namespace SQLitePragmaPerf
             list.Add(new DBOptionPageSize());
             list.Add(new DBOptionCacheSize());
             list.Add(new DBOptionSecureDelete());
+            list.Add(new DBOptionTempStore());
+            list.Add(new DBOptionSQLiteVersion());
 
             return list;
         }
@@ -34,21 +36,25 @@ namespace SQLitePragmaPerf
 
             DBOptionEncoding encoding = new DBOptionEncoding();
             encoding.TargetValue = Encoding.UTF16LE;
+            list.Add(encoding);
 
             DBOptionPageSize pageSize = new DBOptionPageSize();
             pageSize.TargetValue = 4096;
+            list.Add(pageSize);
 
             DBOptionCacheSize cacheSize = new DBOptionCacheSize();
             cacheSize.TargetValue = -1024;
+            list.Add(cacheSize);
 
             DBOptionSecureDelete secureDelete = new DBOptionSecureDelete();
             secureDelete.TargetValue = true;
-
-            list.Add(encoding);
-            list.Add(pageSize);
-            list.Add(cacheSize);
             list.Add(secureDelete);
 
+            DBOptionTempStore tempStore = new DBOptionTempStore();
+            tempStore.TargetValue = TempStore.Memory;
+            list.Add(tempStore);
+
+                        
             return list;
         }
     }

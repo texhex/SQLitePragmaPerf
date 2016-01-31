@@ -9,7 +9,7 @@ namespace SQLitePragmaPerf
 {
     /// <summary>
     /// Cache Size (PRAGMA main.cache_size) - http://www.sqlite.org/pragma.html#pragma_cache_size
-    /// This value can bei be positive, which case is means "X pages cache" or negative in which case it means "X kB of cache"
+    /// This value can bei be positive, which means "X pages cache" or negative in which case it means "X kB of cache"
     /// </summary>
     public class DBOptionCacheSize : DBOptionBaseConnectionStringParameter<int>
     {

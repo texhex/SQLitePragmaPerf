@@ -57,12 +57,21 @@ namespace SQLitePragmaPerf
 
             //Make sure each item is only definied once.
             CheckOptionValueListForDuplicates(optionValues);
-            
+
             //Now reopen the database again and check if we get the same values if we leave out all persistent options
             CheckPersistentDBOptions(fileName, definedOptions, optionValues);
 
             //If we are here, everything has worked so far. We can open the database and return the connection
             Tuple<string, SQLiteConnection> openResult = OpenDatabase(fileName, definedOptions);
+
+            //Debug output of all options
+            List<DBOptionValue> allValues = GetAllKnownOptionsValueList(openResult.Item2);
+            log.Debug("Database {0} created, DBOptions: ", fileName);
+            foreach (DBOptionValue currentValue in allValues)
+            {
+                log.Debug("   {0}", currentValue.ToString());
+            }
+
 
             return openResult;
         }
@@ -83,7 +92,7 @@ namespace SQLitePragmaPerf
             SQLiteConnection.CreateFile(fileName);
 
             //Open it
-             SQLiteConnection connection = new SQLiteConnection(connectionString);
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
             connection.Open();
 
             //Now apply all PRAGMA options
@@ -184,7 +193,7 @@ namespace SQLitePragmaPerf
         /// </summary>
         /// <param name="connection">TList of DBOptionValue</param>
         /// <returns></returns>
-        public List<DBOptionValue> GetAllOptionValueList(SQLiteConnection connection)
+        public List<DBOptionValue> GetAllKnownOptionsValueList(SQLiteConnection connection)
         {
             return GetOptionValueList(connection, DBOptionSets.AllKnownOptions());
         }

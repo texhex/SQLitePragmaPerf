@@ -8,7 +8,8 @@ using Bytes2you.Validation;
 namespace SQLitePragmaPerf
 {
     /// <summary>
-    /// Page size option. The amount of bytes a single "page" should have (PRAGMA main.page_size) - http://www.sqlite.org/pragma.html#pragma_page_size
+    /// Page size option. The amount of bytes a single database page should have.
+    /// PRAGMA main.page_size; - http://www.sqlite.org/pragma.html#pragma_page_size
     /// </summary>
     public class DBOptionPageSize : DBOptionBaseConnectionStringParameter<int>
     {
@@ -27,6 +28,14 @@ namespace SQLitePragmaPerf
             Guard.WhenArgument(value, "value").IsGreaterThan(65536).Throw();
 
             return value.ToString();
+        }
+
+        protected override int VerifyTargetValue(int value)
+        {
+            Guard.WhenArgument(value, "value").IsLessThan(512).Throw();
+            Guard.WhenArgument(value, "value").IsGreaterThan(65536).Throw();
+
+            return value;
         }
 
         protected override int ConvertFromSQLite(string retrievedValue)

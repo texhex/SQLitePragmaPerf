@@ -54,8 +54,7 @@ namespace InternalTestClient
             //dbHandler.CreateDatabase(DBOptionSets.AllOptionsWithoutTargetValue());
             dbHandler.CreateDatabase(DBOptionSets.Testing1());
 
-
-
+            
 
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();

@@ -9,6 +9,9 @@ using System.Data.SQLite;
 
 namespace SQLitePragmaPerf
 {
+    /// <summary>
+    /// Name of the option and the value of it, indent to be displayed to the user.
+    /// </summary>
     public class DBOptionValue
     {
         private DBOptionValue()
@@ -28,7 +31,7 @@ namespace SQLitePragmaPerf
             get; private set;
         }
 
-        //The current value of this option, intend for display to users only
+        //The current value of this option, for display to users only
         public string DisplayValue
         {
             get; private set;
