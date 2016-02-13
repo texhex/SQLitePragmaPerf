@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace SQLitePragmaPerf
 {
-    public class DBOptionSets
+    public class OptionSets
     {
-        //TODO: Fix me!
 
+        /// <summary>
+        /// Returns a list of all known DBOptions, all of them unconfigured
+        /// </summary>
+        /// <returns>List of DBOptions</returns>
         public static List<DBOptionBase> AllKnownOptions()
         {
             List<DBOptionBase> list = new List<DBOptionBase>();

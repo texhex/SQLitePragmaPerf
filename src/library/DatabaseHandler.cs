@@ -40,7 +40,7 @@ namespace SQLitePragmaPerf
         const string DataSourceTemplate = "Data Source = {0};";
 
         /// <summary>
-        /// Creates a database in the definied path with a random name, applies all options and returns both the filename and the SQLiteConnection
+        /// Creates a database in the definied path with a random name, applies all options and returns both the connection string and the SQLiteConnection
         /// </summary>
         /// <param name="definedOptions">List of DBOptions that should be applied</param>
         /// <returns>An open database connection to the newly created database</returns>
@@ -195,7 +195,7 @@ namespace SQLitePragmaPerf
         /// <returns></returns>
         public List<DBOptionValue> GetAllKnownOptionsValueList(SQLiteConnection connection)
         {
-            return GetOptionValueList(connection, DBOptionSets.AllKnownOptions());
+            return GetOptionValueList(connection, OptionSets.AllKnownOptions());
         }
 
 

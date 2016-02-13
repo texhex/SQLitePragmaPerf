@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace SQLitePragmaPerf
 {
-    //TODO: This class needs to prevent somebody from setting a value as this value can not be overwritten. This class can only be used for display.
-
     /// <summary>
     /// Read only DBOption, returns the SQLite version used - https://www.sqlite.org/lang_corefunc.html#sqlite_version
     /// </summary>

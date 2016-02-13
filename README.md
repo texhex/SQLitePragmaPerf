@@ -1,10 +1,11 @@
 # SQLitePragmaPerf
 **IN EARLY DEVELOPMENT. PLEASE IGNORE FOR NOW**
 
+*Wer mißt, mißt Mist* -German proverb
 
 This project tests the effect of System.Data.SQLite database connection settings or [PRAGMA][pragmas] statement on different SQL statements. When all tests are run, it generates CSV files which can be further analyzed.
 
-It’s intent to proof or disproof if pragma X set to Y would result in a 1420% performance gain. 
+It’s intent to proof or disproof if pragma X set to Y would result in a 420% performance gain. 
 
 ##<a name="limitations">Limitations</a>
 

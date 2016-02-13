@@ -15,8 +15,6 @@ namespace InternalTestClient
     {
         static void ConfigureNLog()
         {
-            //string outputLayout = "[${date:format=HH\\:MM\\:ss}] ${logger} >> ${message}"; //Example: [14:01:25] SQLitePragmaPerf.DBOptionEncoding >> Created
-
             string outputLayout = "[${time}-${level}] ${logger} >> ${message}";
 
             LoggingConfiguration config = new LoggingConfiguration();
@@ -52,9 +50,16 @@ namespace InternalTestClient
             DatabaseHandler dbHandler = new DatabaseHandler(@"C:\TEMP");
 
             //dbHandler.CreateDatabase(DBOptionSets.AllOptionsWithoutTargetValue());
-            dbHandler.CreateDatabase(DBOptionSets.Testing1());
+            //string databaseName = "";
+            //SQLiteConnection con;
 
-            
+            Tuple<string, SQLiteConnection> dbData; // = new Tuple<string, SQLiteConnection>();
+            dbData=dbHandler.CreateDatabase(OptionSets.Testing1());
+
+            SQLCommandSimpleTable cmdTable = new SQLCommandSimpleTable();
+
+            cmdTable.Initialize(dbData.Item2);
+            cmdTable.Execute(dbData.Item2, 1000, 9876, false);
 
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
