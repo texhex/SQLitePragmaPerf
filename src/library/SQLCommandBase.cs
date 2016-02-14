@@ -38,44 +38,68 @@ namespace SQLitePragmaPerf
         /// The time required for this command is ignored. 
         /// </summary>
         /// <param name="connection">The open database connection to be used</param>
-        public virtual void Initialize(SQLiteConnection connection)
+        public abstract void Initialize(SQLiteConnection connection);
+
+
+        /// <summary>
+        /// Executes this statement against a database and measures the time that was required to execute it
+        /// </summary>
+        /// <param name="connection">The database to execute against</param>
+        /// <param name="batchSize">Process how many rows in one batch</param>
+        /// <param name="rowsRequested">How many ows that should be generated</param>
+        public abstract TimeSpan Execute(SQLiteConnection connection, int batchSize, int rowsRequested);
+
+        /// <summary>
+        /// Same as Execute but all values are considered to be 1000, which means batchSize=10 is actually "batchSize=10.000"
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="batchSizeKilo"></param>
+        /// <param name="rowsRequestedKilo"></param>
+        /// <returns></returns>
+        public TimeSpan ExecuteKilo(SQLiteConnection connection, int batchSizeKilo, int rowsRequestedKilo)
         {
-            //Make sure we get something useful
-            Guard.WhenArgument(connection, "connection").IsNull().Throw();
+            return Execute(connection, batchSizeKilo * 1000, rowsRequestedKilo * 1000);
         }
 
 
         /// <summary>
-        /// Executes the statement against a database and measures the time is required to execute it
+        /// Ensure that the connection is set and valid
         /// </summary>
-        /// <param name="connection">The database to execute against</param>
-        /// <param name="batchSize">Process how many rows in one batch</param>
-        /// <param name="maxRows">Maximum rows that should be processed</param>
-        /// <param name="warumUp">True if this is only a test run to get the code compiled</param>
-        //TODO: warmUp shouldn't be necessary, this should be handle by the class itself
-        public abstract TimeSpan Execute(SQLiteConnection connection, int batchSize, int maxRows, bool warumUp);
+        /// <param name="connection"></param>
+        protected void VerfiyConnection(SQLiteConnection connection)
+        {
+            Guard.WhenArgument(connection, "connection").IsNull().Throw();
 
+            if (connection.State!=System.Data.ConnectionState.Open)
+            {
+                throw new ArgumentException("The connection must be OPEN");
+            }
+
+        }
 
         /// <summary>
         /// Used to check that the given parameters to Execute make sense
         /// </summary>
         /// <param name="connection"></param>
         /// <param name="batchSize"></param>
-        /// <param name="maxRows"></param>
-        /// <param name="testRun"></param>
-        protected void VerifyExecuteParameters(SQLiteConnection connection, int batchSize, int maxRows, bool warumUp)
+        /// <param name="rowsRequested"></param>
+        protected void VerifyExecuteParameters(SQLiteConnection connection, int batchSize, int rowsRequested)
         {
-            //Check parameters
-            Guard.WhenArgument(connection, "connection").IsNull().Throw();
-            Guard.WhenArgument(batchSize, "batchSize").IsLessThanOrEqual(0).Throw();
-            Guard.WhenArgument(maxRows, "maxRows").IsLessThanOrEqual(0).Throw();
+            //TODO: Make sure that rowsRequested is at least 10k?
 
-            //The batchSize should never be bigger than maxRows
-            Guard.WhenArgument(batchSize, "batchSize").IsGreaterThan(maxRows).Throw();
+            VerfiyConnection(connection);
+
+            //Check parameters
+            Guard.WhenArgument(batchSize, "batchSize").IsLessThanOrEqual(0).Throw();
+            Guard.WhenArgument(rowsRequested, "rowsRequested").IsLessThanOrEqual(0).Throw();
+
+            //The batchSize should not be bigger than maxRows
+            Guard.WhenArgument(batchSize, "batchSize").IsGreaterThan(rowsRequested).Throw();
 
         }
 
 
+        //Helper function to execute a non query single command
         protected void ExecuteSQL(SQLiteConnection connection, string statement)
         {
             using (SQLiteCommand command = connection.CreateCommand())

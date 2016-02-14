@@ -55,12 +55,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseHandler.cs" />
+    <Compile Include="DBOptionAutoIndex.cs" />
     <Compile Include="DBOptionBaseImplementation.cs" />
     <Compile Include="DBOptionBasePragma.cs" />
     <Compile Include="DBOptionCacheSize.cs" />
     <Compile Include="DBOptionBaseConnectionStringParameter.cs" />
+    <Compile Include="DBOptionCellSizeCheck.cs" />
     <Compile Include="DBOptionEncoding.cs" />
+    <Compile Include="DBOptionExclusiveLocking.cs" />
+    <Compile Include="DBOptionJournalMode.cs" />
     <Compile Include="DBOptionPageSize.cs" />
+    <Compile Include="DBOptionSynchronous.cs" />
     <Compile Include="DBOptionValue.cs" />
     <Compile Include="OptionSets.cs" />
     <Compile Include="DBOptionSecureDelete.cs" />
@@ -69,6 +74,7 @@
     <Compile Include="DBOptionTempStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLCommandBase.cs" />
+    <Compile Include="SQLCommandBaseTableFill.cs" />
     <Compile Include="SQLCommandSimpleTable.cs" />
     <Compile Include="Workload.cs" />
   </ItemGroup>

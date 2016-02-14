@@ -47,23 +47,35 @@ namespace InternalTestClient
             Logger log = LogManager.GetCurrentClassLogger();
             log.Info("Starting...");
 
-            DatabaseHandler dbHandler = new DatabaseHandler(@"C:\TEMP");
 
-            //dbHandler.CreateDatabase(DBOptionSets.AllOptionsWithoutTargetValue());
-            //string databaseName = "";
-            //SQLiteConnection con;
-
-            Tuple<string, SQLiteConnection> dbData; // = new Tuple<string, SQLiteConnection>();
-            dbData=dbHandler.CreateDatabase(OptionSets.Testing1());
 
             SQLCommandSimpleTable cmdTable = new SQLCommandSimpleTable();
 
+            DatabaseHandler dbHandler1 = new DatabaseHandler(@"C:\TEMP");
+            //Tuple<string, SQLiteConnection> dbData = dbHandler1.CreateDatabase(OptionSets.MaxReliability());
+            Tuple<string, SQLiteConnection> dbData = dbHandler1.CreateDatabase(OptionSets.DefaultSettings());
             cmdTable.Initialize(dbData.Item2);
-            cmdTable.Execute(dbData.Item2, 1000, 9876, false);
+            cmdTable.ExecuteKilo(dbData.Item2, 200, 1800);
+            log.Debug("-----------------------------------------------------");
+
+            //Creates a 20MB database...
+            //DatabaseHandler dbHandler2 = new DatabaseHandler(@"C:\TEMP");
+            Tuple<string, SQLiteConnection> dbData2 = dbHandler1.CreateDatabase(OptionSets.VeryFast());
+            cmdTable.Initialize(dbData2.Item2);
+            cmdTable.ExecuteKilo(dbData2.Item2, 200, 1800);
+
+            Tuple<string, SQLiteConnection> dbData3 = dbHandler1.CreateDatabase(OptionSets.MaxReliability());
+            cmdTable.Initialize(dbData3.Item2);
+            cmdTable.ExecuteKilo(dbData3.Item2, 200, 1800);
+
+
 
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
+
+            //TODO: Check for high resolution times in StopWatch!
         }
+
 
         //Code from: http://stackoverflow.com/a/457708/612954 by JaredPar - http://stackoverflow.com/users/23283/jaredpar
         static bool IsSubclassOfRawGeneric(Type genericBase, Type toCheck)

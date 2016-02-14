@@ -49,7 +49,7 @@ namespace SQLitePragmaPerf
             string fileName = Path.Combine(_folderPath, "SQLitePragmaPerf_" + Guid.NewGuid().ToString() + ".sqlite");
 
             //First create the database with all options set and store what those functions have returned as values
-            List<DBOptionValue> optionValues = CreateDatabase(fileName, definedOptions);
+            List<DBOptionValue> optionValues = CreateDatabaseInternal(fileName, definedOptions);
 
             //This commands will result in an exception if ENCODING is already used
             //DBOptionValue crashBoomBang = new DBOptionValue("Encoding", "JUST FOR FUN");
@@ -78,7 +78,7 @@ namespace SQLitePragmaPerf
 
 
         //Creates a database, as defined by the options and closes it again
-        private List<DBOptionValue> CreateDatabase(string fileName, List<DBOptionBase> definedOptions)
+        private List<DBOptionValue> CreateDatabaseInternal(string fileName, List<DBOptionBase> definedOptions)
         {
             log.Debug("Creating database...");
 
@@ -99,21 +99,22 @@ namespace SQLitePragmaPerf
             ApplyOptions(connection, definedOptions, ignorePersistentOptions: false);
 
             //Finaly, create a TABLE to make sure that SQLite considers this database not empty
-            SQLiteCommand createTable = new SQLiteCommand("CREATE TABLE ZZZ_PRAGMA_PERF_TEMP_TABLE(name TEXT);", connection);
-            createTable.ExecuteNonQuery();
+            using (SQLiteCommand createTable = new SQLiteCommand("CREATE TABLE ZZZ_PRAGMA_PERF_TEMP_TABLE(name TEXT);", connection))
+            {
+                createTable.ExecuteNonQuery();
+            }
 
-            SQLiteCommand addData = new SQLiteCommand("INSERT INTO ZZZ_PRAGMA_PERF_TEMP_TABLE values('JUST A TEST');", connection);
-            addData.ExecuteNonQuery();
+
+            using (SQLiteCommand addData = new SQLiteCommand("INSERT INTO ZZZ_PRAGMA_PERF_TEMP_TABLE values('JUST A TEST');", connection))
+            {
+                addData.ExecuteNonQuery();
+            }
 
 
             //Now query all options for their current values and store it in our list
             List<DBOptionValue> optionValueList = GetOptionValueList(connection, definedOptions);
 
-            //Close the connection
-            connection.Close();
-
-            //Make sure the connection is not held in any pool 
-            SQLiteConnection.ClearAllPools();
+            CloseConnection(connection);
 
             return optionValueList;
         }
@@ -159,11 +160,9 @@ namespace SQLitePragmaPerf
             //Query all options for their current values 
             List<DBOptionValue> optionValueList = GetOptionValueList(connection, definedOptions);
 
-            //Close the connection
-            connection.Close();
+            CloseConnection(connection);
 
-            //Make sure the connection is not held in any pool 
-            SQLiteConnection.ClearAllPools();
+
 
             //Now compare the expected values with the current values
             foreach (DBOptionValue expected in expectedOptionValues)
@@ -186,6 +185,19 @@ namespace SQLitePragmaPerf
 
         }
 
+
+        private void CloseConnection(SQLiteConnection connection)
+        {
+            //Make sure the connection is not held in any pool 
+            SQLiteConnection.ClearAllPools();
+
+            //Close the connection
+            connection.Close();
+            connection.Dispose();
+
+            //Just to be sure...
+            SQLiteConnection.ClearAllPools();
+        }
 
 
         /// <summary>
