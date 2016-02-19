@@ -6,14 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Bytes2you.Validation;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     /// <summary>
     /// Interface to note that DBOption is a ConnectionStringParameter type
     /// </summary>
     public interface IDBOptionConnectionStringParameter
     {
-        string ApplyToConnectionString(string connectionString);
+        string AppendToConnectionString(string connectionString);
     }
 
 
@@ -53,11 +53,11 @@ namespace SQLitePragmaPerf
 
 
         /// <summary>
-        /// This applies TargetValue to a given connectionString. Right now it is simply appened
+        /// This adds the TargetValue to a given connectionString. There is no check if the option is already active or not. 
         /// </summary>
         /// <param name="connectionString">The connection string that should be changed</param>
         /// <returns>The new connection string</returns>
-        public string ApplyToConnectionString(string connectionString)
+        public string AppendToConnectionString(string connectionString)
         {
             ThrowExceptionIfTargetValueIsNotSet();
 

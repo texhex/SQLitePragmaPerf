@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using SQLiteDBOptions;
 using SQLitePragmaPerf;
 using System.Data.SQLite;
+
 
 namespace InternalTestClient
 {
@@ -49,17 +51,31 @@ namespace InternalTestClient
 
 
 
-            SQLCommandSimpleTable cmdTable = new SQLCommandSimpleTable();
+            
+
+
+            DBOptions options = new DBOptions();
+
+            DBOptionPageSize pageSize = new DBOptionPageSize();
+            pageSize.TargetValue = 1024;
+            //options.Add(pageSize);
+
+            options.AddRange(OptionSets.VeryFast());
+
+
+            //SQLCommandSimpleTable cmdTable = new SQLCommandSimpleTable();
 
             DatabaseHandler dbHandler1 = new DatabaseHandler(@"C:\TEMP");
             //Tuple<string, SQLiteConnection> dbData = dbHandler1.CreateDatabase(OptionSets.MaxReliability());
-            Tuple<string, SQLiteConnection> dbData = dbHandler1.CreateDatabase(OptionSets.DefaultSettings());
-            cmdTable.Initialize(dbData.Item2);
-            cmdTable.ExecuteKilo(dbData.Item2, 200, 1800);
+            Tuple<string, SQLiteConnection> dbData = dbHandler1.CreateDatabase(options);
+            //cmdTable.Initialize(dbData.Item2);
+            //cmdTable.ExecuteKilo(dbData.Item2, 1, 2);
             log.Debug("-----------------------------------------------------");
+            
 
             //Creates a 20MB database...
             //DatabaseHandler dbHandler2 = new DatabaseHandler(@"C:\TEMP");
+            /*
             Tuple<string, SQLiteConnection> dbData2 = dbHandler1.CreateDatabase(OptionSets.VeryFast());
             cmdTable.Initialize(dbData2.Item2);
             cmdTable.ExecuteKilo(dbData2.Item2, 200, 1800);
@@ -67,8 +83,9 @@ namespace InternalTestClient
             Tuple<string, SQLiteConnection> dbData3 = dbHandler1.CreateDatabase(OptionSets.MaxReliability());
             cmdTable.Initialize(dbData3.Item2);
             cmdTable.ExecuteKilo(dbData3.Item2, 200, 1800);
+            */
 
-
+            
 
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();

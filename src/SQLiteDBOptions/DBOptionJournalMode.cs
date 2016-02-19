@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     public enum JournalMode
     {
@@ -28,8 +28,7 @@ namespace SQLitePragmaPerf
                                             retrieveActiveValueSQL: "PRAGMA main.journal_mode;",
                                             isPersistent: false)
         {
-            Log.Debug("Created");
-
+            
         }
 
         protected override string ConvertToConnectionStringParameterValue(JournalMode value)

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bytes2you.Validation;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     /// <summary>
     /// Cache Size (PRAGMA main.cache_size) - http://www.sqlite.org/pragma.html#pragma_cache_size
@@ -18,7 +18,6 @@ namespace SQLitePragmaPerf
                                           retrieveActiveValueSQL: "PRAGMA main.cache_size;",
                                           isPersistent: false) 
         {
-            Log.Debug("Created");
 
         }
 

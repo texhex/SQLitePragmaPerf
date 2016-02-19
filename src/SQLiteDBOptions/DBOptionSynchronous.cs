@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bytes2you.Validation;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     public enum SynchronousMode
     {
@@ -25,7 +25,6 @@ namespace SQLitePragmaPerf
                                             retrieveActiveValueSQL: "PRAGMA main.synchronous;",
                                             isPersistent: false)
         {
-            Log.Debug("Created");
 
         }
 

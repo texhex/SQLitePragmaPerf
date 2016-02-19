@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bytes2you.Validation;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     /// <summary>
     /// Page size option. The amount of bytes a single database page should have.
@@ -18,8 +18,7 @@ namespace SQLitePragmaPerf
                                          retrieveActiveValueSQL: "PRAGMA main.page_size;",
                                          isPersistent: true) 
         {
-            Log.Debug("Created");
-
+            
         }
 
         protected override string ConvertToConnectionStringParameterValue(int value)

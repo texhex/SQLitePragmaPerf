@@ -7,7 +7,7 @@ using NLog;
 using Bytes2you.Validation;
 using System.Data.SQLite;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     /// <summary>
     /// Base class for a DBOption
@@ -71,8 +71,8 @@ namespace SQLitePragmaPerf
         /// The value is retrieved directly from SQLite.
         /// </summary>
         /// <param name="connection">SQLite connection with an open connection to the database</param>
-        /// <returns>DBOptionValue with the current value</returns>
-        public abstract DBOptionValue ExportActiveValue(SQLiteConnection connection);
+        /// <returns>CurrentDBOptionValue with the current value</returns>
+        public abstract CurrentDBOptionValue GetCurrentOptionValue(SQLiteConnection connection);
 
 
     }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NLog;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     public enum Encoding
     {
@@ -25,7 +25,7 @@ namespace SQLitePragmaPerf
                                          retrieveActiveValueSQL: "PRAGMA main.encoding;",
                                          isPersistent: true)
         {
-            Log.Debug("Created");
+            
         }
 
 

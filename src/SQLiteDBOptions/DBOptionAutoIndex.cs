@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace SQLitePragmaPerf
                                           retrieveActiveValueSQL: "PRAGMA automatic_index ;",
                                           isPersistent: false)
         {
-            Log.Debug("Created");
+
         }
 
 

@@ -7,7 +7,7 @@ using NLog;
 using System.Data.SQLite;
 using Bytes2you.Validation;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     /// <summary>
     /// Implement a base for a DBOption (PRAGMA and/or ConnectionString parameter).
@@ -145,11 +145,11 @@ namespace SQLitePragmaPerf
         /// </summary>
         /// <param name="connection">SQLite connection with an open connection to the database</param>
         /// <returns>Tuple: OPTION_NAME and VALUE</returns>
-        public override DBOptionValue ExportActiveValue(SQLiteConnection connection)
+        public override CurrentDBOptionValue GetCurrentOptionValue(SQLiteConnection connection)
         {
             T activeValue = GetActiveValue(connection);
             string displayValue = ConvertToDisplayString(activeValue);
-            return new DBOptionValue(OptionName, displayValue);
+            return new CurrentDBOptionValue(OptionName, displayValue);
         }
 
 

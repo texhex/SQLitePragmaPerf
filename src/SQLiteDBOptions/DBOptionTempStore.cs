@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     public enum TempStore
     {
@@ -26,7 +26,6 @@ namespace SQLitePragmaPerf
                                           retrieveActiveValueSQL: "PRAGMA temp_store;",
                                           isPersistent: false)
         {
-            Log.Debug("Created");
         }
 
 

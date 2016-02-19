@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     /// <summary>
     /// Read only DBOption, returns the SQLite version used - https://www.sqlite.org/lang_corefunc.html#sqlite_version
@@ -16,7 +16,7 @@ namespace SQLitePragmaPerf
                                               retrieveActiveValueSQL: "select sqlite_version();",
                                               isPersistent: true)
         {
-            Log.Debug("Created");
+            
         }
 
         protected override Version VerifyTargetValue(Version value)

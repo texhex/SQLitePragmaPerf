@@ -4,19 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{08F689F8-E603-49F9-BBDB-909600D115E7}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{4C39809C-3CB8-4D7B-9918-43130807AA4F}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InternalTestClient</RootNamespace>
-    <AssemblyName>InternalTestClient</AssemblyName>
+    <RootNamespace>SQLiteDBOptions</RootNamespace>
+    <AssemblyName>SQLiteDBOptions</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -26,7 +24,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -35,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bytes2you.Validation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=a7d501dd757e0442, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bytes2you.Validation.2.0.0.0\lib\portable-win+net40+sl40+wp+Xbox40\Bytes2you.Validation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -53,22 +54,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="CurrentDBOptionValue.cs" />
+    <Compile Include="DBOptionAutoIndex.cs" />
+    <Compile Include="DBOptionBase.cs" />
+    <Compile Include="DBOptionBaseConnectionStringParameter.cs" />
+    <Compile Include="DBOptionBaseImplementation.cs" />
+    <Compile Include="DBOptionBasePragma.cs" />
+    <Compile Include="DBOptionCacheSize.cs" />
+    <Compile Include="DBOptionCellSizeCheck.cs" />
+    <Compile Include="DBOptionEncoding.cs" />
+    <Compile Include="DBOptionExclusiveLocking.cs" />
+    <Compile Include="DBOptionJournalMode.cs" />
+    <Compile Include="DBOptionPageSize.cs" />
+    <Compile Include="DBOptions.cs" />
+    <Compile Include="DBOptionsConnectionHandler.cs" />
+    <Compile Include="DBOptionSecureDelete.cs" />
+    <Compile Include="DBOptionSQLiteVersion.cs" />
+    <Compile Include="DBOptionSynchronous.cs" />
+    <Compile Include="DBOptionTempStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\library\SQLitePragmaPerf.csproj">
-      <Project>{19676dde-03c9-4d8c-b7ed-099f467d8d59}</Project>
-      <Name>SQLitePragmaPerf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SQLiteDBOptions\SQLiteDBOptions.csproj">
-      <Project>{4c39809c-3cb8-4d7b-9918-43130807aa4f}</Project>
-      <Name>SQLiteDBOptions</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.99.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.99.0\build\net451\System.Data.SQLite.Core.targets')" />

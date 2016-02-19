@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
 
     /// <summary>
@@ -19,7 +19,7 @@ namespace SQLitePragmaPerf
                                             retrieveActiveValueSQL: "PRAGMA main.locking_mode;",
                                             isPersistent: false)
         {
-            Log.Debug("Created");
+            
         }
 
         protected override string ConvertToPragmaValue(bool value)

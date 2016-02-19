@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Bytes2you.Validation;
 using System.Data.SQLite;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     /// <summary>
     /// Interface to note that a DBOption is PRAGMA option

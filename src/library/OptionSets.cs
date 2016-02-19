@@ -3,49 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLiteDBOptions;
 
 namespace SQLitePragmaPerf
 {
     public class OptionSets
     {
 
-        /// <summary>
-        /// Returns a list of all known DBOptions, all of them unconfigured
-        /// </summary>
-        /// <returns>List of DBOptions</returns>
-        public static List<DBOptionBase> AllKnownOptions()
+
+        /*
+        public static DBOptions DefaultSettings()
         {
-            List<DBOptionBase> list = new List<DBOptionBase>();
-
-            list.Add(new DBOptionEncoding());
-            list.Add(new DBOptionPageSize());
-            list.Add(new DBOptionJournalMode());
-            list.Add(new DBOptionSynchronous());            
-            list.Add(new DBOptionTempStore());
-            list.Add(new DBOptionExclusiveLocking());
-            list.Add(new DBOptionCacheSize());
-            list.Add(new DBOptionCellSizeCheck());
-            list.Add(new DBOptionSecureDelete());
-            list.Add(new DBOptionAutoIndex());
-            list.Add(new DBOptionSQLiteVersion());
-
+            DBOptions list = new DBOptions();
             return list;
         }
+        */
 
-        public static List<DBOptionBase> DefaultSettings()
-        {
-            List<DBOptionBase> list = new List<DBOptionBase>();
-            return list;
-        }
-
-        public static List<DBOptionBase> VeryFast()
+        public static DBOptions VeryFast()
         {
 
-            List<DBOptionBase> list = new List<DBOptionBase>();
+            DBOptions list = new DBOptions();
 
             //UTF-8 only uses one bytes so this should be the fastest option
             DBOptionEncoding encoding = new DBOptionEncoding();
-            encoding.TargetValue = Encoding.UTF8;
+            encoding.TargetValue = SQLiteDBOptions.Encoding.UTF8;
             list.Add(encoding);
 
             //Page size should be 4k on windows, this alligns with NTFS cluster size
@@ -55,7 +36,7 @@ namespace SQLitePragmaPerf
 
             //The more cache the better, but we are assuming 10MB to be enough
             DBOptionCacheSize cacheSize = new DBOptionCacheSize();
-            cacheSize.TargetValue = -1024*10;
+            cacheSize.TargetValue = -1024 * 10;
             list.Add(cacheSize);
 
             //Temp store is in memory, hence no disk I/O
@@ -92,13 +73,13 @@ namespace SQLitePragmaPerf
             return list;
         }
 
-        public static List<DBOptionBase> Normal()
+        public static DBOptions Normal()
         {
-            List<DBOptionBase> list = new List<DBOptionBase>();
+            DBOptions list = new DBOptions();
 
             //UTF-8 is still the most used encoding so we'll stick with it 
             DBOptionEncoding encoding = new DBOptionEncoding();
-            encoding.TargetValue = Encoding.UTF8;
+            encoding.TargetValue = SQLiteDBOptions.Encoding.UTF8;
             list.Add(encoding);
 
             //Page size should be 4k on windows, this alligns with NTFS
@@ -141,13 +122,13 @@ namespace SQLitePragmaPerf
             return list;
         }
 
-        public static List<DBOptionBase> MaxReliability()
+        public static DBOptions MaxReliability()
         {
-            List<DBOptionBase> list = new List<DBOptionBase>();
+            DBOptions list = new DBOptions();
 
             //UTF-16 allows us to store anything using two bytes, where UTF-8 sometimes require three bytes
             DBOptionEncoding encoding = new DBOptionEncoding();
-            encoding.TargetValue = Encoding.UTF16LE;
+            encoding.TargetValue = SQLiteDBOptions.Encoding.UTF16LE;
             list.Add(encoding);
 
             //Use the same page size as SQL Server
@@ -188,12 +169,12 @@ namespace SQLitePragmaPerf
             return list;
         }
 
-        public static List<DBOptionBase> Testing1()
+        public static DBOptions Testing1()
         {
-            List<DBOptionBase> list = new List<DBOptionBase>();
+            DBOptions list = new DBOptions();
 
             DBOptionEncoding encoding = new DBOptionEncoding();
-            encoding.TargetValue = Encoding.UTF16LE;
+            encoding.TargetValue = SQLiteDBOptions.Encoding.UTF16LE;
             list.Add(encoding);
 
             DBOptionCacheSize cacheSize = new DBOptionCacheSize();
@@ -205,7 +186,7 @@ namespace SQLitePragmaPerf
             list.Add(secureDelete);
 
 
-                        
+
             return list;
         }
     }

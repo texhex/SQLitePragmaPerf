@@ -4,31 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     /// <summary>
     /// Name of the option and the value of it, indent to be displayed to the user.
     /// </summary>
-    public class DBOptionValue
+    //TODO: This name is still ****. 
+    public class CurrentDBOptionValue
     {
-        private DBOptionValue()
+        private CurrentDBOptionValue()
         {
             throw new NotImplementedException();
         }
 
-        public DBOptionValue(string name, string displayValue)
+        public CurrentDBOptionValue(string name, string displayValue)
         {
             Name = name;
             DisplayValue = displayValue;
         }
 
-        //Name of the option that has generated this value
+        /// <summary>
+        /// Name of the option that has generated this value
+        /// </summary>
         public string Name
         {
             get; private set;
         }
 
-        //The current value of this option, for display to users only
+        /// <summary>
+        /// The current value of this option, for display to users only
+        /// </summary>
         public string DisplayValue
         {
             get; private set;

@@ -4,20 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQLitePragmaPerf
+namespace SQLiteDBOptions
 {
     /// <summary>
-    /// Secure Delete option - http://www.sqlite.org/pragma.html#pragma_secure_delete
-    /// When secure-delete is on, SQLite overwrites deleted content with zeros. 
+    /// Cell Size Check will cause SQLite to check pages for errors when data is read from disk
+    /// http://www.sqlite.org/pragma.html#pragma_cell_size_check
     /// </summary>
-    public class DBOptionSecureDelete : DBOptionBasePragma<bool>
+    public class DBOptionCellSizeCheck : DBOptionBasePragma<bool>
     {
-        public DBOptionSecureDelete() : base(optionName: "Secure Delete",
-                                             setPragmaTemplateSQL: "PRAGMA main.secure_delete={0};",
-                                             retrieveActiveValueSQL: "PRAGMA main.secure_delete;",
+        public DBOptionCellSizeCheck() : base(optionName: "Cell Size Check",
+                                             setPragmaTemplateSQL: "PRAGMA cell_size_check ={0};",
+                                             retrieveActiveValueSQL: "PRAGMA cell_size_check ;",
                                              isPersistent: false)
         {
-            Log.Debug("Created");
+
         }
 
 
@@ -35,7 +35,7 @@ namespace SQLitePragmaPerf
                 }
                 else
                 {
-                    throw new NotSupportedException(string.Format("Unsupported secure delete option {0}", retrievedValue));
+                    throw new NotSupportedException(string.Format("Unsupported cell_size_check value {0}", retrievedValue));
                 }
             }
         }
@@ -56,11 +56,11 @@ namespace SQLitePragmaPerf
         {
             if (value == true)
             {
-                return "1";
+                return "true";
             }
             else
             {
-                return "0";
+                return "false";
             }
         }
 
