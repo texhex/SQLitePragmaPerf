@@ -50,8 +50,6 @@ namespace SQLiteDBOptions
                 {
                     if (option.TargetValueSet)
                     {
-                        log.Debug("Applying ConnectionStringParameter option: {0} ", option.OptionName);
-
                         IDBOptionConnectionStringParameter connectionStringOption = (IDBOptionConnectionStringParameter)option;
                         connectionString = connectionStringOption.AppendToConnectionString(connectionString);
                     }
@@ -124,7 +122,7 @@ namespace SQLiteDBOptions
         /// Returns a list of all known DBOptions, all of them unconfigured
         /// </summary>
         /// <returns>DBOptions</returns>
-        public static DBOptions GetAllOptions()
+        public static DBOptions AllDBOptions()
         {
             DBOptions options = new DBOptions();
 

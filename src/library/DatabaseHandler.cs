@@ -45,27 +45,37 @@ namespace SQLitePragmaPerf
         /// </summary>
         /// <param name="definedOptions">List of DBOptions that should be applied</param>
         /// <returns>An open database connection to the newly created database</returns>
-        public Tuple<string, SQLiteConnection> CreateDatabase(DBOptions definedOptions)
+        public SQLiteConnection CreateDatabase(DBOptions definedOptions)
         {
             //First check for duplicate inside the options. Make sure each item is only definied once.
             definedOptions.CheckForDuplicates();
 
             string fileName = Path.Combine(_folderPath, "SQLitePragmaPerf_" + Guid.NewGuid().ToString() + ".sqlite");
 
-            //Create the database with all options set and store what those functions have returned as values
-            List<CurrentDBOptionValue> optionValues = CreateDatabaseInternal(fileName, definedOptions);
+
+            //Create the database with all options set 
+            SQLiteConnection connection = DBOptionsConnectionHandler.CreateDatabase(fileName, definedOptions);
+
+            //Finaly, create a TABLE to make sure that SQLite considers this database not empty
+            CreateTable(connection);
+
+            //Now query all options for their current values and store it in our list
+            List<CurrentDBOptionValue> currentDBOptionValues = DBOptionsConnectionHandler.GetAllDBOptionsValueList(connection);
+
+            //Close the connection to make sure that any DBOption that requires a open/close is satisfied
+            DBOptionsConnectionHandler.CloseDatabase(connection);
 
 
-            //CheckOptionValueListForDuplicates(optionValues);
 
             //Now reopen the database again and check if we get the same values if we leave out all persistent options
-            CheckPersistentDBOptions(fileName, definedOptions, optionValues);
+            CheckPersistentDBOptions(fileName, definedOptions, currentDBOptionValues);
+
 
             //If we are here, everything has worked so far. We can open the database and return the connection
-            Tuple<string, SQLiteConnection> openResult = OpenDatabase(fileName, definedOptions);
+            connection = DBOptionsConnectionHandler.OpenDatabase(fileName, definedOptions);
 
             //Debug output of all options
-            List<CurrentDBOptionValue> allValues = GetAllKnownOptionsValueList(openResult.Item2);
+            List<CurrentDBOptionValue> allValues = DBOptionsConnectionHandler.GetAllDBOptionsValueList(connection);
             log.Debug("Database {0} created, DBOptions: ", fileName);
             foreach (CurrentDBOptionValue currentValue in allValues)
             {
@@ -73,37 +83,13 @@ namespace SQLitePragmaPerf
             }
 
 
-            return openResult;
+            return connection;
         }
 
 
-        //Creates a database, as defined by the options and closes it again
-        private List<CurrentDBOptionValue> CreateDatabaseInternal(string fileName, DBOptions definedOptions)
+        private void CreateTable(SQLiteConnection connection)
         {
-            log.Debug("Creating database...");
 
-            /*
-            string connectionString = string.Format(DataSourceTemplate, fileName);
-
-            //First: Get all options that are definied as connection string parameters so they get applied from the start
-            connectionString = ConstructConnectionString(connectionString, definedOptions, ignorePersistentOptions: false);
-            */
-
-            string connectionString = definedOptions.GenerateConnectionString(fileName);
-            log.Debug("Connection string: {0}", connectionString);
-
-            //Create the database
-            SQLiteConnection.CreateFile(fileName);
-
-            //Open it
-            SQLiteConnection connection = new SQLiteConnection(connectionString);
-            connection.Open();
-
-            //Now apply all PRAGMA options
-            //ApplyOptions(connection, definedOptions, ignorePersistentOptions: false);
-            definedOptions.ApplyOptions(connection);
-
-            //Finaly, create a TABLE to make sure that SQLite considers this database not empty
             using (SQLiteCommand createTable = new SQLiteCommand("CREATE TABLE ZZZ_PRAGMA_PERF_TEMP_TABLE(name TEXT);", connection))
             {
                 createTable.ExecuteNonQuery();
@@ -115,33 +101,8 @@ namespace SQLitePragmaPerf
                 addData.ExecuteNonQuery();
             }
 
-
-            //Now query all options for their current values and store it in our list
-            List<CurrentDBOptionValue> currentDBOptionValues = GetOptionValueList(connection, definedOptions);
-
-            CloseConnection(connection);
-
-            return currentDBOptionValues;
         }
 
-        private Tuple<string, SQLiteConnection> OpenDatabase(string fileName, DBOptions definedOptions)
-        {
-            log.Debug("Opening database...");
-
-            string connectionString = string.Format(DataSourceTemplate, fileName);
-
-            connectionString = ConstructConnectionString(connectionString, definedOptions, ignorePersistentOptions: false);
-            log.Debug("Connection string: {0}", connectionString);
-
-            //Open it
-            SQLiteConnection connection = new SQLiteConnection(connectionString);
-            connection.Open();
-
-            //Now apply all PRAGMA options
-            ApplyOptions(connection, definedOptions, ignorePersistentOptions: false);
-
-            return new Tuple<string, SQLiteConnection>(connectionString, connection);
-        }
 
         //Open a database but ignores all options that have IsPersistent=true and then checks the value of all options with the expected list.
         //This ensures that a persistent option is really persistent
@@ -152,38 +113,21 @@ namespace SQLitePragmaPerf
             //Create an options object without any option that is configured "Persistent"
             DBOptions optionsWithoutPersistent = new DBOptions();
 
-            foreach(DBOptionBase option in options)
+            foreach (DBOptionBase option in options)
             {
-                if (option.IsPersistent==false)
+                if (option.IsPersistent == false)
                 {
                     optionsWithoutPersistent.Add(option);
                 }
             }
 
-            string connectionString = optionsWithoutPersistent.GenerateConnectionString(fileName);
+            //string connectionString = optionsWithoutPersistent.GenerateConnectionString(fileName);
+            SQLiteConnection connection = DBOptionsConnectionHandler.OpenDatabase(fileName, optionsWithoutPersistent);
 
-            /*
-            string connectionString = string.Format(DataSourceTemplate, fileName);
+            //Query all options for their values
+            List<CurrentDBOptionValue> optionValueList = DBOptionsConnectionHandler.GetAllDBOptionsValueList(connection);
 
-            //Construct connection string without any persistent option
-            connectionString = ConstructConnectionString(connectionString, definedOptions, ignorePersistentOptions: true);
-            
-            */
-            log.Debug("Connection string without persistent options: {0}", connectionString);
-
-
-            //Open the database
-            SQLiteConnection connection = new SQLiteConnection(connectionString);
-            connection.Open();
-
-            //Apply options but ignore any persistent option
-            ApplyOptions(connection, options, ignorePersistentOptions: true);
-
-            //Query all options for their current values 
-            List<CurrentDBOptionValue> optionValueList = GetOptionValueList(connection, options);
-
-            CloseConnection(connection);
-
+            DBOptionsConnectionHandler.CloseDatabase(connection);
 
 
             //Now compare the expected values with the current values
@@ -196,7 +140,7 @@ namespace SQLitePragmaPerf
                         if (current.DisplayValue != expected.DisplayValue)
                         {
                             throw new InvalidOperationException(string.Format(
-                                "The option [{0}] is marked as persistent, but reopening the database resulted in a different value than configured: Actual [{1}], expected [{2}]",
+                                "The option [{0}] is marked as persistent, but reopening the database resulted in a different value than configured: Current value from  open test [{1}], expected [{2}]",
                                 expected.Name, current.DisplayValue, expected.DisplayValue
                                 ));
                         }
@@ -207,133 +151,6 @@ namespace SQLitePragmaPerf
 
         }
 
-
-        private void CloseConnection(SQLiteConnection connection)
-        {
-            //Make sure the connection is not held in any pool 
-            SQLiteConnection.ClearAllPools();
-
-            //Close the connection
-            if (connection != null)
-            {
-                connection.Close();
-                connection.Dispose();
-            }
-
-            //Just to be sure...
-            SQLiteConnection.ClearAllPools();
-        }
-
-
-        /// <summary>
-        /// Returns a list of all known options and their values
-        /// </summary>
-        /// <param name="connection">TList of CurrentDBOptionValue</param>
-        /// <returns></returns>
-        public List<CurrentDBOptionValue> GetAllKnownOptionsValueList(SQLiteConnection connection)
-        {
-            return GetOptionValueList(connection, DBOptions.GetAllOptions());
-        }
-
-
-        private List<CurrentDBOptionValue> GetOptionValueList(SQLiteConnection connection, DBOptions definedOptions)
-        {
-            List<CurrentDBOptionValue> optionValueList = new List<CurrentDBOptionValue>();
-
-            foreach (DBOptionBase option in definedOptions)
-            {
-                optionValueList.Add(option.GetCurrentOptionValue(connection));
-            }
-
-            return optionValueList;
-        }
-
-
-        /*
-        //Checks the given list for duplicates in order to avoid strange effects
-        private void CheckOptionValueListForDuplicates(List<CurrentDBOptionValue> list)
-        {
-            foreach (CurrentDBOptionValue itemOuterLoop in list)
-            {
-                //now search the inner list for the outer item
-
-                int counter = 0;
-                foreach (CurrentDBOptionValue itemInnerLoop in list)
-                {
-                    if (itemInnerLoop.Name == itemOuterLoop.Name)
-                    {
-                        counter++;
-                    }
-                }
-
-                //If counter>1, we have an duplicate item
-                if (counter > 1)
-                {
-                    throw new NotSupportedException(string.Format("Only one DBOption of the same type is supported, but [{0}] was used more than once", itemOuterLoop.Name));
-                }
-
-            }
-
-        }
-        */
-
-           
-        //Construct a connection string based on the list of options
-        private string ConstructConnectionString(string connectionString, DBOptions definedOptions, bool ignorePersistentOptions)
-        {
-            foreach (DBOptionBase option in definedOptions)
-            {
-                if (option is IDBOptionConnectionStringParameter)
-                {
-                    if (option.TargetValueSet)
-                    {
-
-                        if (ignorePersistentOptions && option.IsPersistent)
-                        {
-                            //do nothing
-                        }
-                        else
-                        {
-                            log.Debug("Applying ConnectionStringParameter option: {0} ", option.OptionName);
-
-                            IDBOptionConnectionStringParameter connectionStringOption = (IDBOptionConnectionStringParameter)option;
-                            connectionString = connectionStringOption.AppendToConnectionString(connectionString);
-                        }
-
-                    }
-                }
-            }
-
-            return connectionString;
-        }
-        
-
-        //Applies DBoptions to a connection 
-        private void ApplyOptions(SQLiteConnection connection, DBOptions definedOptions, bool ignorePersistentOptions)
-        {
-            foreach (DBOptionBase option in definedOptions)
-            {
-                if (option is IDBOptionPragma)
-                {
-                    if (option.TargetValueSet)
-                    {
-
-                        if (ignorePersistentOptions && option.IsPersistent)
-                        {
-                            //do nothing
-                        }
-                        else
-                        {
-                            log.Debug("Applying PRAGMA option: {0} ", option.OptionName);
-
-                            IDBOptionPragma pragmaOption = (IDBOptionPragma)option;
-                            pragmaOption.ApplyToDatabase(connection);
-                        }
-
-                    }
-                }
-            }
-        }
 
 
 

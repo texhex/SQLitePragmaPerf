@@ -10,7 +10,7 @@ namespace SQLitePragmaPerf
     /// <summary>
     /// Insert a table with only one column "NAME" in it and inserts always the same name "Joe"
     /// </summary>
-    public class SQLCommandSimpleTable : SQLCommandBaseTableFill
+    public class SQLCommandTableSimple : SQLCommandBaseTableFill
     {
 
         protected override void PrepareDatabase(SQLiteConnection connection)

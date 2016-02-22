@@ -99,7 +99,9 @@ namespace SQLitePragmaPerf
         }
 
 
-        //Helper function to execute a non query single command
+        //Helper function to execute a non query single command.
+        //This command is only executed from the objects directly, no user input is involved
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         protected void ExecuteSQL(SQLiteConnection connection, string statement)
         {
             using (SQLiteCommand command = connection.CreateCommand())

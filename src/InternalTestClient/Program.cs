@@ -10,7 +10,6 @@ using SQLiteDBOptions;
 using SQLitePragmaPerf;
 using System.Data.SQLite;
 
-
 namespace InternalTestClient
 {
     class Program
@@ -60,32 +59,42 @@ namespace InternalTestClient
             pageSize.TargetValue = 1024;
             //options.Add(pageSize);
 
-            options.AddRange(OptionSets.VeryFast());
+            //options.AddRange(OptionSets.VeryFast());
+            //options.AddRange();
 
 
-            //SQLCommandSimpleTable cmdTable = new SQLCommandSimpleTable();
+            
 
             DatabaseHandler dbHandler1 = new DatabaseHandler(@"C:\TEMP");
+            SQLiteConnection connection = dbHandler1.CreateDatabase(OptionSets.VeryFast());
             //Tuple<string, SQLiteConnection> dbData = dbHandler1.CreateDatabase(OptionSets.MaxReliability());
-            Tuple<string, SQLiteConnection> dbData = dbHandler1.CreateDatabase(options);
+            //Tuple<string, SQLiteConnection> dbData = dbHandler1.CreateDatabase(options);
             //cmdTable.Initialize(dbData.Item2);
             //cmdTable.ExecuteKilo(dbData.Item2, 1, 2);
             log.Debug("-----------------------------------------------------");
+
+            //SQLCommandSimpleTable cmdTable = new SQLCommandSimpleTable();
+            //cmdTable.Initialize(connection);
+            //cmdTable.ExecuteKilo(connection, 200, 1800);
+
+            SQLCommandTableFieldingOf cmdFieldingOf = new SQLCommandTableFieldingOf();
+            cmdFieldingOf.Initialize(connection);
+            cmdFieldingOf.ExecuteKilo(connection, 500, 1800);
+
+            SQLCommandTableSchools cmdSchools = new SQLCommandTableSchools();
+            cmdSchools.Initialize(connection);
+            cmdSchools.ExecuteKilo(connection, 500, 1800);
+
             
 
-            //Creates a 20MB database...
-            //DatabaseHandler dbHandler2 = new DatabaseHandler(@"C:\TEMP");
             /*
-            Tuple<string, SQLiteConnection> dbData2 = dbHandler1.CreateDatabase(OptionSets.VeryFast());
-            cmdTable.Initialize(dbData2.Item2);
-            cmdTable.ExecuteKilo(dbData2.Item2, 200, 1800);
+            DatabaseHandler dbHandler2 = new DatabaseHandler(@"C:\TEMP");
+            SQLiteConnection connection2 = dbHandler2.CreateDatabase(OptionSets.MaxReliability());
 
-            Tuple<string, SQLiteConnection> dbData3 = dbHandler1.CreateDatabase(OptionSets.MaxReliability());
-            cmdTable.Initialize(dbData3.Item2);
-            cmdTable.ExecuteKilo(dbData3.Item2, 200, 1800);
+            cmdFieldingOf.Initialize(connection2);
+            cmdFieldingOf.ExecuteKilo(connection2, 200, 1800);
             */
 
-            
 
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
