@@ -49,10 +49,29 @@ namespace InternalTestClient
             log.Info("Starting...");
 
 
+            DBOptions normal = OptionSets.Normal_v10();
+            DBOptions fast = OptionSets.VeryFast_v10();
+
+            List<DBOptions> optionList = new List<DBOptions>();
+            optionList.Add(normal);
+            optionList.Add(fast);
+
+
+            List<SQLCommandBase> commandList = new List<SQLCommandBase>();
+            commandList.Add(new SQLCommandTableSimple());
+            commandList.Add(new SQLCommandTableFieldingOf());
+            commandList.Add(new SQLCommandTableSchools());
+            commandList.Add(new SQLCommandTableMaster());
+            commandList.Add(new SQLCommandFieldingOfPlayerNames());
+
+
+            Runner runner = new Runner(@"C:\TEMP", optionList, commandList);
+            //runner.Run(1200, 200) = Generate 1.2 Million rows and execute every 200.000 rows of them in one batch
+            runner.Run(100, 50); 
+
 
             
-
-
+            /*
             DBOptions options = new DBOptions();
 
             DBOptionPageSize pageSize = new DBOptionPageSize();
@@ -61,45 +80,12 @@ namespace InternalTestClient
 
             //options.AddRange(OptionSets.VeryFast());
             //options.AddRange();
-
-
-            
-
-            DatabaseHandler dbHandler1 = new DatabaseHandler(@"C:\TEMP");
-            SQLiteConnection connection = dbHandler1.CreateDatabase(OptionSets.VeryFast());
-            //Tuple<string, SQLiteConnection> dbData = dbHandler1.CreateDatabase(OptionSets.MaxReliability());
-            //Tuple<string, SQLiteConnection> dbData = dbHandler1.CreateDatabase(options);
-            //cmdTable.Initialize(dbData.Item2);
-            //cmdTable.ExecuteKilo(dbData.Item2, 1, 2);
-            log.Debug("-----------------------------------------------------");
-
-            //SQLCommandSimpleTable cmdTable = new SQLCommandSimpleTable();
-            //cmdTable.Initialize(connection);
-            //cmdTable.ExecuteKilo(connection, 200, 1800);
-
-            SQLCommandTableFieldingOf cmdFieldingOf = new SQLCommandTableFieldingOf();
-            cmdFieldingOf.Initialize(connection);
-            cmdFieldingOf.ExecuteKilo(connection, 500, 1800);
-
-            SQLCommandTableSchools cmdSchools = new SQLCommandTableSchools();
-            cmdSchools.Initialize(connection);
-            cmdSchools.ExecuteKilo(connection, 500, 1800);
-
-            
-
-            /*
-            DatabaseHandler dbHandler2 = new DatabaseHandler(@"C:\TEMP");
-            SQLiteConnection connection2 = dbHandler2.CreateDatabase(OptionSets.MaxReliability());
-
-            cmdFieldingOf.Initialize(connection2);
-            cmdFieldingOf.ExecuteKilo(connection2, 200, 1800);
             */
+            
 
 
             Console.WriteLine("Press RETURN to exit");
             Console.ReadLine();
-
-            //TODO: Check for high resolution times in StopWatch!
         }
 
 

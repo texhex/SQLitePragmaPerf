@@ -13,16 +13,11 @@ namespace SQLitePragmaPerf
     /// </summary>
     public abstract class SQLCommandBaseTableFill : SQLCommandBase
     {
-        /// <summary>
-        /// Creates the table
-        /// </summary>
-        /// <param name="connection"></param>
-        public override void Initialize(SQLiteConnection connection)
+        public SQLCommandBaseTableFill()
         {
-            VerfiyConnection(connection);
-
-            PrepareDatabase(connection);
+            this.CommandType = SQLitePragmaPerf.CommandType.GenerateData;
         }
+        
 
         public override TimeSpan Execute(SQLiteConnection connection, int batchSize, int rowsRequested)
         {
@@ -35,7 +30,7 @@ namespace SQLitePragmaPerf
             //The question is if prepared statements really make that big difference because normally the engine 
             //should detect if the same command is executed over and over again: http://stackoverflow.com/a/21376455/612954
             //
-            //However, I assume that telling SQlite that we are reusing a statement can't be bad.
+            //However, I assume that telling SQlite that we are reusing a statement can't be wrong
             using (SQLiteCommand command = connection.CreateCommand())
             {
                 command.CommandType = System.Data.CommandType.Text; //just to be sure
@@ -54,7 +49,6 @@ namespace SQLitePragmaPerf
 
             Log.Debug("  Done in {0}ms", (long)result.TotalMilliseconds);
             return result;
-
         }
 
         //Real execute function 
@@ -90,11 +84,7 @@ namespace SQLitePragmaPerf
             return swatch.Elapsed;
         }
 
-        /// <summary>
-        /// Prepare the database for this command (Create table schema etc.)
-        /// </summary>
-        /// <param name="connection"></param>
-        protected abstract void PrepareDatabase(SQLiteConnection connection);
+
 
         /// <summary>
         /// Used to define the statement (parameters etc.) which will then be used in a loop

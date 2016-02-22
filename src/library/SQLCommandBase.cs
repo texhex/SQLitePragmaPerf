@@ -9,11 +9,11 @@ using Bytes2you.Validation;
 
 namespace SQLitePragmaPerf
 {
-    enum ExecutionType
+    public enum CommandType
     {
-        Init,
-        Exec,
-        CleanUp
+        GenerateData,
+        UseData,
+        RemoveData
     }
     
 
@@ -33,12 +33,28 @@ namespace SQLitePragmaPerf
             get; private set;
         }
 
+        public CommandType CommandType
+        {
+            get; protected set;
+        }
+
         /// <summary>
         /// Can be used to prepare the database for the exec of this command. 
         /// The time required for this command is ignored. 
         /// </summary>
         /// <param name="connection">The open database connection to be used</param>
-        public abstract void Initialize(SQLiteConnection connection);
+        public void Initialize(SQLiteConnection connection)
+        {
+            VerfiyConnection(connection);
+
+            PrepareDatabase(connection);
+        }
+
+        /// <summary>
+        /// Prepare the database for this command (Create table schema etc.)
+        /// </summary>
+        /// <param name="connection"></param>
+        protected abstract void PrepareDatabase(SQLiteConnection connection);
 
 
         /// <summary>
@@ -85,8 +101,6 @@ namespace SQLitePragmaPerf
         /// <param name="rowsRequested"></param>
         protected void VerifyExecuteParameters(SQLiteConnection connection, int batchSize, int rowsRequested)
         {
-            //TODO: Make sure that rowsRequested is at least 10k?
-
             VerfiyConnection(connection);
 
             //Check parameters

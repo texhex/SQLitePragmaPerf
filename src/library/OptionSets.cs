@@ -19,10 +19,10 @@ namespace SQLitePragmaPerf
         }
         */
 
-        public static DBOptions VeryFast()
+        public static DBOptions VeryFast_v10()
         {
-
             DBOptions list = new DBOptions();
+            list.Name = "Very fast v1.0";
 
             //UTF-8 only uses one bytes so this should be the fastest option
             DBOptionEncoding encoding = new DBOptionEncoding();
@@ -73,9 +73,10 @@ namespace SQLitePragmaPerf
             return list;
         }
 
-        public static DBOptions Normal()
+        public static DBOptions Normal_v10()
         {
             DBOptions list = new DBOptions();
+            list.Name = "Normal v1.0";
 
             //UTF-8 is still the most used encoding so we'll stick with it 
             DBOptionEncoding encoding = new DBOptionEncoding();
@@ -122,9 +123,11 @@ namespace SQLitePragmaPerf
             return list;
         }
 
-        public static DBOptions MaxReliability()
+        public static DBOptions MaxReliability_v10()
         {
             DBOptions list = new DBOptions();
+            list.Name = "Max reliability v1.0";
+
 
             //UTF-16 allows us to store anything using two bytes, where UTF-8 sometimes require three bytes
             DBOptionEncoding encoding = new DBOptionEncoding();

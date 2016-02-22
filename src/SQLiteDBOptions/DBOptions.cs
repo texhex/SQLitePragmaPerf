@@ -8,8 +8,6 @@ using NLog;
 
 namespace SQLiteDBOptions
 {
-    //TODO: Convert this to an immutable?
-
     /// <summary>
     /// A collection of DBOptionXXX instances which can be used to retrieve the configured DBOptions as connection string and apply them to a database.
     /// Note that this class is not performance optimized. For best use, use it once to open the database connection and then resuse the connection. 
@@ -29,6 +27,13 @@ namespace SQLiteDBOptions
             return GenerateConnectionString(filename, "");
         }
 
+        /// <summary>
+        /// Optional name for these options
+        /// </summary>
+        public string Name
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Generates a connection string that includes all configured options that can be changed using the connection string. You still need to call ApplyOptions() after opening the database!
@@ -142,6 +147,8 @@ namespace SQLiteDBOptions
         }
 
         /*
+        I leave this here if we every need it again
+
         public new void Add(DBOptionBase value)
         {
             Type typeNewItem = value.GetType();

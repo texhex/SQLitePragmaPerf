@@ -71,5 +71,26 @@ namespace SQLitePragmaPerf
                 return Convert.ToInt32(value);
             }
         }
+
+        protected string ConvertToString(string value, bool replaceWithNull)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                if (replaceWithNull)
+                {
+                    return null;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            else
+            {
+                return value;
+            }
+        }
+
+
     }
 }

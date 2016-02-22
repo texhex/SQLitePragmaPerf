@@ -36,7 +36,7 @@ namespace SQLitePragmaPerf
 
         string _folderPath = "";
 
-        Logger log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
         const string DataSourceTemplate = "Data Source = {0};";
 
@@ -45,7 +45,7 @@ namespace SQLitePragmaPerf
         /// </summary>
         /// <param name="definedOptions">List of DBOptions that should be applied</param>
         /// <returns>An open database connection to the newly created database</returns>
-        public SQLiteConnection CreateDatabase(DBOptions definedOptions)
+        public Tuple<string, SQLiteConnection> CreateDatabase(DBOptions definedOptions)
         {
             //First check for duplicate inside the options. Make sure each item is only definied once.
             definedOptions.CheckForDuplicates();
@@ -82,8 +82,7 @@ namespace SQLitePragmaPerf
                 log.Debug("   {0}", currentValue.ToString());
             }
 
-
-            return connection;
+            return new Tuple<string, SQLiteConnection>(fileName, connection);
         }
 
 
